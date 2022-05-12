@@ -1,4 +1,5 @@
-#!/bin/bash
+!/bin/bash
+#dokcer installieren
 sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -12,8 +13,7 @@ sudo add-apt-repository \
    stable"
 sudo apt-get update
 sudo apt-get install -y docker-ce
-sudo docker run hello-world
-# Linux post-install
 sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo systemctl enable docker
+sudo docker run -d --name prometheus-container -e TZ=CET -p 30090:9090 ubuntu/prometheus:2.33-22.04_beta
