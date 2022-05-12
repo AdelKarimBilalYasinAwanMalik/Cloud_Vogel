@@ -1,5 +1,4 @@
-!/bin/bash
-#dokcer installieren
+#!/bin/bash
 sudo apt-get install -y \
     apt-transport-https \
     ca-certificates \
@@ -17,3 +16,4 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 sudo systemctl enable docker
 sudo docker run -d --name prometheus-container -e TZ=CET -p 30090:9090 ubuntu/prometheus:2.33-22.04_beta
+sudo docker run -d --name grafana-container -e TZ=CET -p 3000:3000 grafana/grafana-oss
