@@ -18,6 +18,27 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 echo "zwischenstand 2"
 sudo systemctl enable docker
-sudo docker run -d --name prometheus-container -e TZ=CET -p 30090:9090 ubuntu/prometheus:2.33-22.04_beta
+
+cat <<'EOF'>/home/dockerroot/prometheus.yml
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+rule_files:
+  # - "first.rules"
+  # - "second.rules"
+scrape_configs:
+  - job_name: NE01
+    static_configs:
+      - targets: ['192.168.66.184:9100']
+  - job_name: NE02
+    static_configs:
+      - targets: ['192.168.66.185:9100']
+  - job_name: NE03
+    static_configs:
+      - targets: ['192.168.66.183:9100']
+EOF
+
+sudo docker run -d -p 9090:9090 -v /home/dockerroot/prometheus.yml:/etc/prometheus/prometheus.yml --name=prometheus prom/prometheus
+
 sudo docker run -d --name grafana-container -e TZ=CET -p 3000:3000 grafana/grafana-oss
 echo "Container laufen jetzt"
